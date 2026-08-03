@@ -8,9 +8,9 @@
   - Self-referential: a subject's preference about their own membership.
   - Third-party: a subject's preference about another subject's membership. Only third-party preferences from a group's current members count toward majority.
 - Tick rules (there's a daily tick when group membership changes for all groups):
-  - **Join**: a subject joins a group if they want to (self-referential yes) *and* a majority of the group's current members want them in (third-party yes). Otherwise they don't join.
+  - **Join**: a subject joins a group if they want to (self-referential yes) _and_ a majority of the group's current members want them in (third-party yes). Otherwise they don't join.
   - **Leave**: a subject's self-referential preference is decisive — if they want to leave, they leave, regardless of the group's preference.
-  - **Expulsion**: if a subject wants to stay but a majority of the *other* current members (their own vote doesn't count) want them out, they're removed. Multiple subjects can be expelled from a group in the same tick, each evaluated independently against the group's membership at the start of the tick.
+  - **Expulsion**: if a subject wants to stay but a majority of the _other_ current members (their own vote doesn't count) want them out, they're removed. Multiple subjects can be expelled from a group in the same tick, each evaluated independently against the group's membership at the start of the tick.
   - **Majority**: strictly more than half of the relevant voters; ties don't count. In a 2-person group, majority requires both members to agree.
     - Exception for expulsion: a tie counts as a vote to expel, not a vote to stay. A subject needs strict majority support among the other members to remain; a tie goes against them.
   - **Group size**: leaving/expulsion shrinks a group by one. A group only disbands at 0 members — a group of 1 is a valid, persistent state.
