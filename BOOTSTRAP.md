@@ -52,10 +52,6 @@ npm run gen && npm run build && npx wrangler deploy --dry-run
 
 Should print `env.ASSETS  Assets` under bindings, no errors.
 
-### Add a CI Workflow
-
-`.github/workflows/ci.yml` — same `lint-check-build` job as `site`, so it can be wired up as a required status check once branch protection is added.
-
 ### Create the GitHub Repo and Branch Protection
 
 ```bash
