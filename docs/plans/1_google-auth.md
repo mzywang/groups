@@ -1,4 +1,4 @@
-# Plan: Google sign-in for groups.mzywang.dev
+# _Plan: Google sign-in for groups.mzywang.dev
 
 ## Goal
 
@@ -15,8 +15,7 @@ Let a real human authenticate to the app via "Sign in with Google," and turn tha
 ## Current state
 
 - `groups.mzywang.dev` is live, git-connected to Cloudflare Workers Builds, custom domain working.
-- A D1 database named `groups` already exists (`wrangler d1 create groups` was run), database id `8da7b16a-dd1f-47a2-b693-b974c1613e75`. Not yet bound in `wrangler.jsonc` or committed.
-- A draft migration for a `subjects` table exists locally (stashed, uncommitted) — schema: `id`, `google_sub` (unique), `email`, `display_name`, `created_at`.
+- No D1 database exists yet. It will be created via Terraform (see Phase 2) rather than `wrangler d1 create`, so its existence is captured in code instead of being a one-off CLI action.
 
 ## Phases
 
@@ -38,11 +37,13 @@ Each phase lists whether it's a **PR** (code, goes through the normal branch-pro
    - No redirect URIs needed (the Identity Services button flow doesn't use server-side redirects).
 5. Copy the Client ID (`xxxx.apps.googleusercontent.com`) — this is a public value, safe to commit/embed in frontend code, not a secret.
 
-### Phase 2 — D1 binding and subjects table
+### Phase 2 — D1 database (via Terraform), binding, and subjects table
 
 **PR**, plus one manual step for production.
 
-- PR: add `d1_databases` binding to `wrangler.jsonc` (binding name `DB`), add `migrations/0001_subjects.sql` creating the `subjects` table.
+- PR: add a Terraform config (`terraform/` — `cloudflare/cloudflare` provider) declaring the `cloudflare_d1_database` resource named `groups`, so the database itself is code, not a one-off `wrangler d1 create`. Terraform state can live locally (gitignored) or in a remote backend — local is fine for a single-person project.
+- Manual/CLI: `tofu apply` (OpenTofu, in `terraform/`) to actually create the database — this touches live Cloudflare account state, so it's on you to run or explicitly approve.
+- PR: once the database (and its uuid) exists, add the `d1_databases` binding to `wrangler.jsonc` (binding name `DB`) referencing that uuid, add `migrations/0001_subjects.sql` creating the `subjects` table.
 - Manual/CLI: apply the migration to the local dev DB (`wrangler d1 migrations apply groups --local` — I can run this, it's local-only) and to production (`wrangler d1 migrations apply groups --remote` — this touches live infra, so it's on you to run or explicitly approve, same as the earlier remote deploy steps).
 
 ### Phase 3 — Session secret
