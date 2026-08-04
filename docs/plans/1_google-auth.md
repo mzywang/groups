@@ -1,4 +1,4 @@
-# _Plan: Google sign-in for groups.mzywang.dev
+# Plan: Google sign-in for groups.mzywang.dev
 
 ## Goal
 
